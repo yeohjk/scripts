@@ -22,9 +22,9 @@ class wind_speed_sensor:
                 print(self.wind_speed_bytes.hex())
                 self.wind_speed = int(self.wind_speed_bytes.hex(), 16)/100
                 print("Wind Speed = " + str(self.wind_speed) + " m/s")
-            time.sleep(int(input("Interval Time(s): ")))
+            time.sleep(interval)
         return
 
 #Wind speed sensor query and response execution
 query_1 = wind_speed_sensor()
-query_1.query_response()
+query_1.query_response(60)
