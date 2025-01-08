@@ -16,19 +16,24 @@ class wind_speed_sensor:
     #Query and Response method with time interval between measurements
     def query_response_loop(self, interval):
         while True:
-            with serial.Serial('/dev/ttyUSB0', timeout=1) as ser:
-                ser.write(self.query_bytes)
-                self.response_bytes = ser.read(7)
-                print(self.response_bytes)
-                self.wind_speed_bytes = self.response_bytes[3:5]
-                print(self.wind_speed_bytes.hex())
-                self.wind_speed = str(int(self.wind_speed_bytes.hex(), 16)/100)
-                print(f"Wind Speed = {self.wind_speed} m/s")
-                #Sending data to intranet database
-                command = f"curl -u  incrs:newshunli++ -s -k \"https://192.168.39.199/~incrisp/wind/input_speed.php?speed={self.wind_speed}&antenna={self.antenna}\""
-                result = os.popen(command).read()
-                print(result)
-                time.sleep(interval)
+            try:
+                with serial.Serial('/dev/ttyUSB0', timeout=1) as ser:
+                    ser.write(self.query_bytes)
+                    self.response_bytes = ser.read(7)
+                    print(self.response_bytes)
+                    self.wind_speed_bytes = self.response_bytes[3:5]
+                    print(self.wind_speed_bytes.hex())
+                    self.wind_speed = str(int(self.wind_speed_bytes.hex(), 16)/100)
+                    print(f"Wind Speed = {self.wind_speed} m/s")
+                    #Sending data to intranet database
+                    command = f"curl -u  incrs:newshunli++ -s -k \"https://192.168.39.199/~incrisp/wind/input_speed.php?speed={self.wind_speed}&antenna={self.antenna}\""
+                    result = os.popen(command).read()
+                    print(result)
+                    time.sleep(interval)
+            except Exception as error_message:
+                print("Error occurred:", error_message)
+            finally:
+                continue
         return
 
 #Wind speed sensor query and response loop execution
