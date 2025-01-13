@@ -26,7 +26,7 @@ class wind_speed_sensor:
                     self.wind_speed = str(int(self.wind_speed_bytes.hex(), 16)/100)
                     print(f"Wind Speed = {self.wind_speed} m/s")
                     #Sending data to intranet database
-                    command = f"curl -u  incrs:newshunli++ -s -k \"https://192.168.39.199/~incrisp/wind/input_speed.php?speed={self.wind_speed}&antenna={self.antenna}\""
+                    command = f"curl -u  incrs:newshunli++ -s -k \"https://192.168.39.197/~incrisp/wind/input_speed.php?speed={self.wind_speed}&antenna={self.antenna}\""
                     result = os.popen(command).read()
                     print(result)
                     time.sleep(interval)
